@@ -1,133 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Happy Birthday, Love 💌</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday, Love 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="desktop-message">Open this on mobile for the full surprise 💜</div>
 
-<!-- ============================================= -->
-<!-- COVER SCREEN — first thing she sees            -->
-<!-- ============================================= -->
-<section id="cover" class="cover">
-  <div class="cover-hearts" aria-hidden="true">💗 💌 💗</div>
-  <button id="envelopeBtn" class="envelope-btn">
-    <span class="envelope-emoji">🎁</span>
-    <span class="tap-text">tap to open your gift, love</span>
-  </button>
-</section>
+  <div class="mobile-shell">
+    <section id="cover" class="cover">
+      <div class="cover-glow" aria-hidden="true">💗 ✨ 💌 ✨ 💗</div>
+      <h1 class="cover-title">Happy Birthday, Love</h1>
+      <div class="catch-zone">
+        <div id="envelopeTarget" class="envelope-target" aria-label="Catch the envelope">💌</div>
+      </div>
+      <p id="catchHint" class="catch-hint">Catch me before I run away... 💖</p>
+      <div class="catch-counter"><span id="catchCounter">0 / 4</span></div>
+    </section>
 
-<!-- Floating music control (appears once opened) -->
-<button id="musicToggle" class="music-toggle hidden" aria-label="Play music">🎵</button>
-<audio id="bgMusic" loop preload="none">
-  <!-- EDIT ME: put your song file in the music/ folder and update the filename below -->
-  <source src="music/New West - Those Eyes (Lyrics)(MP3_160K).mp3" type="audio/mpeg">
-</audio>
+    <button id="musicToggle" class="music-toggle hidden" aria-label="Play music">🎵</button>
+    <audio id="bgMusic" loop preload="none">
+      <source src="music/New West - Those Eyes (Lyrics)(MP3_160K).mp3" type="audio/mpeg">
+    </audio>
 
-<main id="mainContent" class="main-content hidden">
+    <main id="mainContent" class="main-content hidden">
+      <section class="hero page active">
+        <div class="tiny-badge">for my favorite person</div>
+        <h1 id="typewriterText" class="script-heading">Happy Birthday</h1>
+        <p class="subtitle">you make my whole world feel softer, louder, and a lot more beautiful.</p>
 
-  <!-- ============================================= -->
-  <!-- HERO                                           -->
-  <!-- ============================================= -->
-  <section class="hero">
-    <h1 class="script-heading">Happy Birthday,<br>my Love 🎉</h1>
-    <!-- EDIT ME: swap "Mizzie" if you'd like her full name used anywhere else -->
-    <p class="subtitle">the best thing that's happened to me since March 8.</p>
+        <div class="day-counter-card">
+          <p id="dayCounter" class="counter-number">0</p>
+          <p class="counter-label">days of being ridiculously lucky to have you</p>
+        </div>
+      </section>
 
-    <div class="day-counter-card">
-      <p id="dayCounter" class="counter-number">0</p>
-      <p class="counter-label">days of being Soo Lucky to call you mine</p>
+       <section class="letter-section page">
+        <h2 class="script-heading small">A tiny letter</h2>
+
+        <div id="mailEnvelope" class="mail-envelope" aria-label="Open the birthday letter" tabindex="0" role="button">
+          <div class="mail-flap"></div>
+          <div class="mail-paper">
+            <span class="mail-emoji">💌</span>
+            <div class="typed-message">
+              <span class="script-heading mail-title">Happy Birthday</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="letterBody" class="letter-body hidden">
+          <p>My Love,</p>
+          <p>I know I'm not the best boyfriend, and I know I've made mistakes and disappointed you many times. I'm sorry for those moments.</p>
+          <p>It's already been three months nung nag simula ka mag work, and i miss you so much. I miss talking to you in person, spending time with you, and just having you by my side.</p>
+          <p>I know na mahirap at nakaka pagod and work mo, and I am thankful na kahit pagod ka, you still have time to talk to me and respond to my texts. Sometimes, nahihiya nalang ako kasi may gana pa akong mang away at mag
+            overthink, while you're working so hard. I'm sorry love.
+          </p>
+          <p>I may not always say it, but I'm really lucky to have you. Thank you for staying with me, for understanding me, and for being patient with me even when i make mistakes.</p>
+          <p>I can't promise that I'll never make mistakes again, but i can promise that I'll keep trying to do better, not just for myself but for us.</p>
+          <p>I hope you enjoy your birthday, love. You deserve to be happy, to rest, and to feel loved today. i wish i could be there with you right now, but even from far away, I'm always cheering for you.</p>
+          <p class="signature">Happy Birthday, my Love. I love you so much❤️<br>-Your love</p>
+        </div>
+      </section>
+
+      <section class="gallery-section page">
+        <h2 class="script-heading small">Our little chaos</h2>
+
+        <div class="polaroid-strip">
+          <figure class="polaroid rotate-1">
+            <img src="images/photo2.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Soafer Gandaa😍</figcaption>
+          </figure>
+          <figure class="polaroid rotate-2">
+            <img src="images/photo4.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>our first photo</figcaption>
+          </figure>
+          <figure class="polaroid rotate-1">
+            <img src="images/photo8.png" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>low-quality video call🤣</figcaption>
+          </figure>
+          <figure class="polaroid rotate-2">
+            <img src="images/photo1.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>my small gift😅</figcaption>
+          </figure>
+          <figure class="polaroid rotate-1">
+            <img src="images/photo12.png" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Thank you for having me❤️</figcaption>
+          </figure>
+          <figure class="polaroid rotate-2">
+            <img src="images/photo5.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Cutetiee🥰</figcaption>
+          </figure>
+          <figure class="polaroid rotate-1">
+            <img src="images/photo6.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Divaaaaa🤩</figcaption>
+          </figure>
+          <figure class="polaroid rotate-2">
+            <img src="images/photo10.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Ang Gwapo🤤</figcaption>
+          </figure>
+          <figure class="polaroid rotate-1">
+            <img src="images/photo11.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>Ang cute mo sa Posing HAHAHA</figcaption>
+          </figure>
+          <figure class="polaroid rotate-2">
+            <img src="images/photo7.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
+            <figcaption>My Princess👸</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="quiz-section page">
+        <h2 class="script-heading small">How well do you know us?</h2>
+        <div id="quizContainer"></div>
+      </section>
+
+      <section class="last-message page">
+        <div class="message-loop" aria-live="polite">
+          <p class="final-line is-visible">Happy birthday</p>
+          <p class="final-line">With all my love</p>
+          <p class="final-line">Always and forever</p>
+        </div>
+
+        <p class="tiny-note">Thank you for being part of my life</p>
+        <p class="tiny-note">I hope this little gift makes your special day even more beautiful</p>
+        <p class="final-signoff">Forever yours 💗</p>
+      </section>
+    </main>
+
+    <div class="touch-hint" aria-hidden="true">
+      <span>←</span>
+      <span>tap sides to move</span>
+      <span>→</span>
     </div>
-  </section>
 
-  <!-- ============================================= -->
-  <!-- PHOTO GALLERY                                  -->
-  <!-- ============================================= -->
-  <section class="gallery-section">
-    <h2 class="script-heading small">Our Little Gallery</h2>
+    <canvas id="confettiCanvas"></canvas>
+  </div>
 
-    <div class="polaroid-strip">
-      <figure class="polaroid rotate-1">
-        <img src="images/photo2.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>Soafer ganda!!😍</figcaption>
-      </figure>
-      <figure class="polaroid rotate-2">
-        <img src="images/photo4.jpeg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>Our first photo</figcaption>
-      </figure>
-      <figure class="polaroid rotate-1">
-        <img src="images/photo8.png" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>Low quality Video Call🤣</figcaption>
-      </figure>
-      <figure class="polaroid rotate-2">
-        <img src="images/photo6.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>Divaa🤩</figcaption>
-      </figure>
-      <figure class="polaroid rotate-1">
-        <img src="images/photo1.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>My simple gift😅</figcaption>
-      </figure>
-      <figure class="polaroid rotate-2">
-        <img src="images/photo6.jpg" alt="A memory of us" onerror="this.parentElement.classList.add('placeholder')">
-        <figcaption>can't wait to make more of these</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ============================================= -->
-  <!-- REASONS I LOVE YOU — tap to shuffle             -->
-  <!-- ============================================= -->
-  <section class="reasons-section">
-    <h2 class="script-heading small">Reasons I Love You</h2>
-    <div class="reason-card">
-      <p id="reasonText">tap the button — there are too many reasons to fit on one page</p>
-    </div>
-    <button id="reasonBtn" class="playful-btn">give me a reason 💗</button>
-  </section>
-
-  <!-- ============================================= -->
-  <!-- THE LETTER                                     -->
-  <!-- ============================================= -->
-  <section class="letter-section">
-    <h2 class="script-heading small">A Little Letter</h2>
-    <button id="letterToggle" class="playful-btn secondary">unfold my letter 💌</button>
-
-    <div id="letterBody" class="letter-body hidden">
-      <!-- EDIT ME: this whole letter is yours to rewrite -->
-      <p>My Love,</p>
-      <p>I know I'm not the best boyfriend, and I know I've made mistakes and disappointed you many times. I'm sorry for those moments.</p>
-      <p>It's already been three months nung nag simula ka mag work, and i miss you so much. I miss talking to you in person, spending time with you, and just having you by my side.</p>
-      <p>I know na mahirap at nakaka pagod and work mo, and I am thankful na kahit pagod ka, you still have time to talk to me and respond to my texts. Sometimes, nahihiya nalang ako kasi may gana pa akong mang away at mag
-        overthink, while you're working so hard. I'm sorry love.
-      </p>
-      <p>I may not always say it, but I'm really lucky to have you. Thank you for staying with me, for understanding me, and for being patient with me even when i make mistakes.</p>
-      <p>I can't promise that I'll never make mistakes again, but i can promise that I'll keep trying to do better, not just for myself but for us.</p>
-      <p>I hope you enjoy your birthday, love. You deserve to be happy, to rest, and to feel loved today. i wish i could be there with you right now, but even from far away, I'm always cheering for you.</p>
-      <p class="signature">Happy Birthday, my Love. I love you so much❤️<br>-Your love</p>
-    </div>
-  </section>
-
-  <!-- ============================================= -->
-  <!-- MINI QUIZ                                      -->
-  <!-- ============================================= -->
-  <section class="quiz-section">
-    <h2 class="script-heading small">How Well Do You Know Us?</h2>
-    <div id="quizContainer"></div>
-  </section>
-
-  <footer class="footer">
-    <p>miss you every single day, Love. 🎂✨</p>
-  </footer>
-
-</main>
-
-<canvas id="confettiCanvas"></canvas>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
