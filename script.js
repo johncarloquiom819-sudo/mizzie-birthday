@@ -5,19 +5,43 @@ const QUIZ = [
     q: "When did we officially become a couple?",
     options: ["March 8", "April 1 (nice try)", "Some random Tuesday"],
     correct: 0,
-    remark: "as if you'd forget. 😌"
+    remark: "Correckong😌",
+    wrongRemark: "Excuse me?! Nakalimutan nya😂"
   },
   {
     q: "What do I call you?",
     options: ["Bes", "Love", "Ma'am"],
     correct: 1,
-    remark: "obviously."
+    remark: "Obviously.",
+    wrongRemark: "Ma'am?! Bes?! Try again, you know what I call you. 😭"
   },
   {
     q: "What's the correct answer to \"do you miss me?\"",
     options: ["A little", "Not really", "Every second of every day"],
     correct: 2,
-    remark: "correct answer, always."
+    remark: "Weehhhh 🥰",
+    wrongRemark: "Kawawa naman pala ako😭"
+  },
+  {
+    q: "When is my birthday?",
+    options: ["January 2", "February 14", "December 25"],
+    correct: 0,
+    remark: "Waw naalala nyaa",
+    wrongRemark: "Kaninong birthday??😒"
+  },
+  {
+    q: "Where did we meet?",
+    options: ["Panaginip", "DHSUD", "Mars"],
+    correct: 1,
+    remark: "DHSUD syempree! 🥰",
+    wrongRemark: "Wana na, nakalimutan na😂"
+  },
+  {
+    q: "Do you love me?",
+    options: ["Yes", "Ofcourse", "Syempre"],
+    correct: [0, 1, 2],
+    remark: "Correct. Every answer is correct because you better love me. 😌💗",
+    wrongRemark: "There is no wrong answer here... wala kang pinili. 😂"
   }
 ];
 
@@ -32,6 +56,8 @@ const dayCounter = document.getElementById("dayCounter");
 const letterBody = document.getElementById("letterBody");
 const mailEnvelope = document.getElementById("mailEnvelope");
 const quizContainer = document.getElementById("quizContainer");
+const slideshowImage = document.getElementById("slideshowImage");
+const slideshowCaption = document.getElementById("slideshowCaption");
 
 let catchGoal = 4;
 let catchCount = 0;
@@ -50,7 +76,6 @@ function moveEnvelope() {
 function revealMainPage() {
   cover.classList.add("hidden");
   mainContent.classList.remove("hidden");
-  musicToggle.classList.remove("hidden");
   burstConfetti(120);
   bgMusic.play().catch(() => {});
   musicToggle.textContent = "🎵";
@@ -94,10 +119,15 @@ musicToggle.addEventListener("click", () => {
 });
 
 if (mailEnvelope) {
-  mailEnvelope.addEventListener("click", () => {
-    mailEnvelope.classList.add("hidden");
-    mailEnvelope.classList.remove("open");
-    letterBody.classList.remove("hidden");
+  mailEnvelope.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (mailEnvelope.classList.contains("opening")) return;
+
+    mailEnvelope.classList.add("opening", "open");
+    setTimeout(() => {
+      mailEnvelope.classList.add("hidden");
+      letterBody.classList.remove("hidden");
+    }, 1250);
   });
 
   mailEnvelope.addEventListener("keydown", (event) => {
@@ -108,6 +138,68 @@ if (mailEnvelope) {
   });
 }
 
+document.querySelectorAll(".polaroid").forEach((photo) => {
+  photo.setAttribute("tabindex", "0");
+  photo.setAttribute("role", "button");
+  photo.setAttribute("aria-label", `${photo.querySelector("img")?.alt || "Photo"}. Tap to enlarge`);
+  let galleryPlaceholder = null;
+
+  const togglePhotoSize = (event) => {
+    event.stopPropagation();
+    const isExpanded = photo.classList.toggle("is-expanded");
+
+    if (isExpanded) {
+      galleryPlaceholder = document.createComment("expanded photo position");
+      photo.replaceWith(galleryPlaceholder);
+      document.body.appendChild(photo);
+      requestAnimationFrame(() => photo.classList.add("is-visible"));
+    } else if (galleryPlaceholder) {
+      photo.classList.remove("is-visible");
+      galleryPlaceholder.replaceWith(photo);
+      galleryPlaceholder = null;
+    }
+
+    photo.setAttribute("aria-pressed", isExpanded);
+  };
+
+  photo.addEventListener("click", togglePhotoSize);
+  photo.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      togglePhotoSize(event);
+    }
+  });
+});
+
+const slideshowPhotos = Array.from(document.querySelectorAll(".polaroid img")).map((image) => ({
+  src: image.getAttribute("src"),
+  alt: image.getAttribute("alt") || "A memory of us",
+  caption: image.parentElement.querySelector("figcaption")?.textContent || "A memory of us"
+}));
+let slideshowIndex = 0;
+let slideshowTimer = null;
+
+function showSlideshowPhoto(index) {
+  if (!slideshowPhotos.length || !slideshowImage) return;
+
+  slideshowIndex = (index + slideshowPhotos.length) % slideshowPhotos.length;
+  const photo = slideshowPhotos[slideshowIndex];
+  slideshowImage.src = photo.src;
+  slideshowImage.alt = photo.alt;
+  slideshowCaption.textContent = photo.caption;
+}
+
+function startSlideshow() {
+  if (slideshowTimer || slideshowPhotos.length < 2) return;
+
+  slideshowTimer = setInterval(() => showSlideshowPhoto(slideshowIndex + 1), 3500);
+}
+
+if (slideshowPhotos.length) {
+  showSlideshowPhoto(0);
+  startSlideshow();
+}
+
 let quizStep = 0;
 
 function renderQuiz() {
@@ -116,7 +208,7 @@ function renderQuiz() {
   if (quizStep >= QUIZ.length) {
     const final = document.createElement("p");
     final.className = "quiz-final";
-    final.textContent = "you got everything right, of course you did. happy birthday, love! 🎂";
+    final.textContent = "you got everything right, of course you did. Palagi kanaman tama 😒. happy birthday, love! 🎂";
     quizContainer.appendChild(final);
     return;
   }
@@ -137,21 +229,23 @@ function renderQuiz() {
     btn.addEventListener("click", () => {
       const options = card.querySelectorAll(".quiz-option");
       options.forEach((node) => (node.disabled = true));
+      const correctAnswers = Array.isArray(item.correct) ? item.correct : [item.correct];
+      const isCorrect = correctAnswers.includes(idx);
 
-      btn.classList.add(idx === item.correct ? "correct" : "wrong");
-      if (idx !== item.correct) {
-        options[item.correct].classList.add("correct");
+      btn.classList.add(isCorrect ? "correct" : "wrong");
+      if (!isCorrect && correctAnswers.length === 1) {
+        options[correctAnswers[0]].classList.add("correct");
       }
 
       const remark = document.createElement("p");
       remark.className = "quiz-remark";
-      remark.textContent = item.remark;
+      remark.textContent = isCorrect ? item.remark : item.wrongRemark;
       card.appendChild(remark);
 
       setTimeout(() => {
-        quizStep += 1;
+        if (isCorrect) quizStep += 1;
         renderQuiz();
-      }, 1500);
+      }, isCorrect ? 3200 : 2800);
     });
 
     card.appendChild(btn);
