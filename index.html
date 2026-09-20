@@ -47,6 +47,10 @@
         <h2 class="script-heading small">A tiny letter</h2>
 
         <div id="mailEnvelope" class="mail-envelope" aria-label="Open the birthday letter" tabindex="0" role="button">
+          <span class="letter-heart letter-heart-one" aria-hidden="true">♡</span>
+          <span class="letter-heart letter-heart-two" aria-hidden="true">♡</span>
+          <span class="letter-heart letter-heart-three" aria-hidden="true">♡</span>
+          <span class="letter-heart letter-heart-four" aria-hidden="true">♡</span>
           <div class="mail-flap"></div>
           <div class="mail-paper">
             <span class="mail-emoji">💌</span>
@@ -119,8 +123,8 @@
 
       <section class="quiz-section page">
         <h2 class="script-heading small">How well do you know us?</h2>
-        <div class="quiz-gif-card">
-          <img src="images/cute-bear.webp" alt="A little quiz surprise" onerror="this.parentElement.classList.add('gif-placeholder')">
+        <div id="quizGifCard" class="quiz-gif-card is-empty" aria-live="polite">
+          <img id="quizGif" src="" alt="A little quiz reaction">
         </div>
         <div id="quizContainer"></div>
       </section>

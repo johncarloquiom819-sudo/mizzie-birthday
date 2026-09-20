@@ -45,6 +45,12 @@ const QUIZ = [
   }
 ];
 
+const QUIZ_GIFS = {
+  default: "images/cute-bear.webp",
+  correct: "images/happy-bear.gif",
+  incorrect: "images/sad-bear.gif"
+};
+
 const cover = document.getElementById("cover");
 const presentTarget = document.getElementById("presentTarget");
 const catchHint = document.getElementById("catchHint");
@@ -55,11 +61,49 @@ const dayCounter = document.getElementById("dayCounter");
 const letterBody = document.getElementById("letterBody");
 const mailEnvelope = document.getElementById("mailEnvelope");
 const quizContainer = document.getElementById("quizContainer");
+const quizGifCard = document.getElementById("quizGifCard");
+const quizGif = document.getElementById("quizGif");
 const slideshowImage = document.getElementById("slideshowImage");
 const slideshowCaption = document.getElementById("slideshowCaption");
 
 let catchGoal = 5;
 let catchCount = 0;
+
+function createLetterBodyHearts() {
+  if (!letterBody) return;
+
+  for (let index = 0; index < 8; index += 1) {
+    const heart = document.createElement("span");
+    const edge = Math.floor(Math.random() * 4);
+    const position = 8 + Math.random() * 84;
+    const offset = -(4 + Math.random() * 14);
+
+    heart.className = "floating-heart letter-body-heart";
+    heart.textContent = "♡";
+    heart.setAttribute("aria-hidden", "true");
+    heart.style.fontSize = `${1.2 + Math.random() * 1.1}rem`;
+    heart.style.opacity = `${0.45 + Math.random() * 0.4}`;
+    heart.style.animationDelay = `${Math.random() * 2.5}s`;
+
+    if (edge === 0) {
+      heart.style.left = `${offset}px`;
+      heart.style.top = `${position}%`;
+    } else if (edge === 1) {
+      heart.style.right = `${offset}px`;
+      heart.style.top = `${position}%`;
+    } else if (edge === 2) {
+      heart.style.left = `${position}%`;
+      heart.style.top = `${offset}px`;
+    } else {
+      heart.style.left = `${position}%`;
+      heart.style.bottom = `${offset}px`;
+    }
+
+    letterBody.appendChild(heart);
+  }
+}
+
+createLetterBodyHearts();
 
 function revealMainPage() {
   cover.classList.add("hidden");
@@ -202,12 +246,22 @@ if (slideshowPhotos.length) {
 
 let quizStep = 0;
 
+function setQuizGif(type) {
+  if (!quizGifCard || !quizGif) return;
+
+  const source = QUIZ_GIFS[type] || "";
+  quizGif.src = source;
+  quizGifCard.classList.toggle("is-empty", !source);
+  quizGifCard.classList.remove("gif-placeholder");
+}
+
 function isQuizComplete() {
   return quizStep >= QUIZ.length;
 }
 
 function renderQuiz() {
   quizContainer.innerHTML = "";
+  setQuizGif("default");
 
   if (isQuizComplete()) {
     const final = document.createElement("p");
@@ -235,6 +289,7 @@ function renderQuiz() {
       options.forEach((node) => (node.disabled = true));
       const correctAnswers = Array.isArray(item.correct) ? item.correct : [item.correct];
       const isCorrect = correctAnswers.includes(idx);
+      setQuizGif(isCorrect ? "correct" : "incorrect");
 
       btn.classList.add(isCorrect ? "correct" : "wrong");
       if (!isCorrect && correctAnswers.length === 1) {
