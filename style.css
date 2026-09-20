@@ -140,40 +140,47 @@ h1, h2, p { margin: 0; }
   50% { transform: translateY(-8px) scale(1.06); opacity: 1; }
 }
 
-.catch-zone {
+.present-target {
   position: relative;
-  width: min(82vw, 340px);
-  height: 220px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: inset 0 0 25px rgba(255,255,255,0.06), 0 16px 28px rgba(0,0,0,0.18);
-  overflow: hidden;
-}
-
-.envelope-target {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(3rem, 13vw, 5rem);
+  left: auto;
+  top: auto;
+  transform: none;
+  margin: 82px 0 34px;
+  font-size: clamp(5rem, 28vw, 9rem);
   cursor: pointer;
   user-select: none;
-  filter: drop-shadow(0 8px 18px rgba(254, 182, 226, 0.8));
-  animation: skitter 0.9s ease-in-out infinite alternate;
-  transition: transform 0.18s ease, opacity 0.2s ease;
+  filter: drop-shadow(0 8px 18px rgba(254, 182, 226, 0.65));
+  animation: presentFloat 2.4s ease-in-out infinite;
+  transition: filter 0.18s ease, opacity 0.25s ease;
 }
 
-.envelope-target:active { transform: translate(-50%, -50%) scale(0.92); }
+.present-target:active { transform: scale(0.92); }
 
-.envelope-target.caught {
-  opacity: 0.2;
-  filter: none;
+.present-target.shaking {
+  animation: presentShake 0.42s ease-in-out;
 }
 
-@keyframes skitter {
-  0% { transform: translate(-50%, -50%) rotate(-8deg) scale(1); }
-  100% { transform: translate(-50%, -50%) rotate(8deg) scale(1.05); }
+.present-target.opened {
+  animation: presentOpen 1s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes presentFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-9px) rotate(2deg); }
+}
+
+@keyframes presentShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(calc(0px - var(--shake-strength))) rotate(-5deg); }
+  40% { transform: translateX(var(--shake-strength)) rotate(5deg); }
+  60% { transform: translateX(calc(0px - var(--shake-small))) rotate(-4deg); }
+  80% { transform: translateX(var(--shake-small)) rotate(4deg); }
+}
+
+@keyframes presentOpen {
+  0% { transform: scale(1) rotate(0); opacity: 1; }
+  55% { transform: scale(1.3) rotate(-8deg); opacity: 1; }
+  100% { transform: translateY(-18px) scale(1.65) rotate(12deg); opacity: 0; }
 }
 
 .catch-hint {
@@ -182,14 +189,6 @@ h1, h2, p { margin: 0; }
   font-size: clamp(1.7rem, 5.5vw, 2.3rem);
   line-height: 1.1;
   color: #ffe7f8;
-}
-
-.catch-counter {
-  font-size: 0.84rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.8);
-  text-transform: uppercase;
 }
 
 .main-content {

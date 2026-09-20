@@ -46,9 +46,8 @@ const QUIZ = [
 ];
 
 const cover = document.getElementById("cover");
-const envelopeTarget = document.getElementById("envelopeTarget");
+const presentTarget = document.getElementById("presentTarget");
 const catchHint = document.getElementById("catchHint");
-const catchCounter = document.getElementById("catchCounter");
 const mainContent = document.getElementById("mainContent");
 const musicToggle = document.getElementById("musicToggle");
 const bgMusic = document.getElementById("bgMusic");
@@ -59,19 +58,8 @@ const quizContainer = document.getElementById("quizContainer");
 const slideshowImage = document.getElementById("slideshowImage");
 const slideshowCaption = document.getElementById("slideshowCaption");
 
-let catchGoal = 4;
+let catchGoal = 5;
 let catchCount = 0;
-
-function moveEnvelope() {
-  const zone = cover.querySelector(".catch-zone");
-  if (!zone) return;
-
-  const rect = zone.getBoundingClientRect();
-  const x = 18 + Math.random() * Math.max(10, rect.width - 110);
-  const y = 16 + Math.random() * Math.max(10, rect.height - 110);
-  envelopeTarget.style.left = `${x}px`;
-  envelopeTarget.style.top = `${y}px`;
-}
 
 function revealMainPage() {
   cover.classList.add("hidden");
@@ -81,20 +69,32 @@ function revealMainPage() {
   musicToggle.textContent = "🎵";
 }
 
-envelopeTarget.addEventListener("click", () => {
+function tapPresent() {
   catchCount += 1;
-  catchCounter.textContent = `${catchCount} / ${catchGoal}`;
+  presentTarget.style.setProperty("--shake-strength", `${catchCount * 2}px`);
+  presentTarget.style.setProperty("--shake-small", `${catchCount * 1.4}px`);
+  presentTarget.classList.remove("shaking");
+  void presentTarget.offsetWidth;
+  presentTarget.classList.add("shaking");
 
   if (catchCount >= catchGoal) {
-    envelopeTarget.classList.add("caught");
-    catchHint.textContent = "caught you, love 💞";
-    setTimeout(revealMainPage, 700);
+    presentTarget.classList.add("opened");
+    catchHint.textContent = "Happy birthday, love! 💞";
+    burstConfetti(140);
+    setTimeout(revealMainPage, 1100);
     return;
   }
 
   const remaining = catchGoal - catchCount;
-  catchHint.textContent = remaining === 1 ? "one more and I’m yours..." : `${remaining} more and I’m yours...`;
-  moveEnvelope();
+  catchHint.textContent = remaining === 1 ? "one more tap..." : `${remaining} more taps...`;
+}
+
+presentTarget.addEventListener("click", tapPresent);
+presentTarget.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    tapPresent();
+  }
 });
 
 function updateDayCounter() {
@@ -202,10 +202,14 @@ if (slideshowPhotos.length) {
 
 let quizStep = 0;
 
+function isQuizComplete() {
+  return quizStep >= QUIZ.length;
+}
+
 function renderQuiz() {
   quizContainer.innerHTML = "";
 
-  if (quizStep >= QUIZ.length) {
+  if (isQuizComplete()) {
     const final = document.createElement("p");
     final.className = "quiz-final";
     final.textContent = "you got everything right, of course you did. Palagi kanaman tama 😒. happy birthday, love! 🎂";
@@ -259,6 +263,8 @@ renderQuiz();
 const pages = Array.from(document.querySelectorAll(".page"));
 let currentPage = 0;
 let touchStartX = 0;
+let touchStartY = 0;
+const navigationZoneTop = 0.72;
 
 let finalMessageStarted = false;
 let finalLineInterval = null;
@@ -310,17 +316,26 @@ function showPage(nextIndex) {
   }
 }
 
+function canNavigate() {
+  return currentPage !== 3 || isQuizComplete();
+}
+
 document.addEventListener("touchstart", (event) => {
   touchStartX = event.changedTouches[0].clientX;
+  touchStartY = event.changedTouches[0].clientY;
 }, { passive: true });
 
 document.addEventListener("touchend", (event) => {
   if (mainContent.classList.contains("hidden")) return;
+  if (touchStartY < window.innerHeight * navigationZoneTop) return;
 
   const endX = event.changedTouches[0].clientX;
+  const endY = event.changedTouches[0].clientY;
   const delta = endX - touchStartX;
 
+  if (endY < window.innerHeight * navigationZoneTop) return;
   if (Math.abs(delta) < 40) return;
+  if (!canNavigate() && delta < 0) return;
   if (delta < 0) showPage(currentPage + 1);
   else showPage(currentPage - 1);
 }, { passive: true });
@@ -328,10 +343,11 @@ document.addEventListener("touchend", (event) => {
 document.addEventListener("click", (event) => {
   if (mainContent.classList.contains("hidden")) return;
   if (event.target.closest("button")) return;
+  if (event.clientY < window.innerHeight * navigationZoneTop) return;
 
   const x = event.clientX;
   if (x < window.innerWidth * 0.46) showPage(currentPage - 1);
-  else if (x > window.innerWidth * 0.54) showPage(currentPage + 1);
+  else if (x > window.innerWidth * 0.54 && canNavigate()) showPage(currentPage + 1);
 });
 
 showPage(0);
@@ -400,5 +416,3 @@ function animateConfetti() {
   }
 }
 
-moveEnvelope();
-setInterval(moveEnvelope, 980);
